@@ -1,6 +1,7 @@
 package br.com.devdojo.awsome.util;
-/*
- * Created by glemos on 13/06/2018.
+
+/**
+ * @author Created by Gabriel Lemos on 13/06/2018.
  */
 
 import org.springframework.stereotype.Component;

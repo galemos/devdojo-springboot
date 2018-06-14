@@ -1,6 +1,6 @@
 package br.com.devdojo.awsome;
-/*
- * Created by Gabriel Lemos on 13/06/2018.
+/**
+ * @author Created by Gabriel Lemos on 13/06/2018.
  */
 
 import org.springframework.boot.SpringApplication;
