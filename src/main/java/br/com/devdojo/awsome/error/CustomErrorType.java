@@ -1,4 +1,4 @@
-package br.com.devdojo.awsome.eror;
+package br.com.devdojo.awsome.error;
 
 /**
  * @author Created by glemos on 14/06/2018.

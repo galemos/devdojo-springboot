@@ -4,7 +4,8 @@ package br.com.devdojo.awsome.endpoint;
  * @author Created by Gabriel Lemos on 13/06/2018.
  */
 
-import br.com.devdojo.awsome.eror.CustomErrorType;
+import br.com.devdojo.awsome.error.CustomErrorType;
+import br.com.devdojo.awsome.error.ResourceNotFoundException;
 import br.com.devdojo.awsome.model.Student;
 import br.com.devdojo.awsome.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,8 @@ public class StudentEndpoint {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getStudentById(@PathVariable("id") Long id) {
-        Optional<Student> student = studentDAO.findById(id);
-        if (student.isPresent()){
-            return  new ResponseEntity<>(student,HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(new CustomErrorType("Student not found"), HttpStatus.NOT_FOUND);
-        }
+        verifyIfStudentExist(id);
+        return  new ResponseEntity<>(studentDAO.findById(id),HttpStatus.OK);
     }
 
     @GetMapping(path = "/findbyname/{name}")
@@ -51,14 +48,22 @@ public class StudentEndpoint {
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> remove(@PathVariable Long id) {
+        verifyIfStudentExist(id);
         studentDAO.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<?> update(@RequestBody Student student) {
+        verifyIfStudentExist(student.getId());
         studentDAO.save(student);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private void verifyIfStudentExist(Long id){
+        if(!studentDAO.findById(id).isPresent())
+            throw new ResourceNotFoundException("Student not found for ID: " + id);
+
     }
 
 
