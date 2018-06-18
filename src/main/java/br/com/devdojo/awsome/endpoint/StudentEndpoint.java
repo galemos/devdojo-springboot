@@ -33,15 +33,20 @@ public class StudentEndpoint {
     public ResponseEntity<?> getStudentById(@PathVariable("id") Long id) {
         Optional<Student> student = studentDAO.findById(id);
         if (student.isPresent()){
-            return new ResponseEntity<>(new CustomErrorType("Student not found"), HttpStatus.NOT_FOUND);
-        } else {
             return  new ResponseEntity<>(student,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new CustomErrorType("Student not found"), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping(path = "/findbyname/{name}")
+    public ResponseEntity<?> findStudentByName(@PathVariable("name") String name) {
+        return new ResponseEntity<>(studentDAO.findByNameIgnoreCaseContaining(name), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Student student) {
-        return new ResponseEntity<>(studentDAO.save(student),HttpStatus.OK);
+        return new ResponseEntity<>(studentDAO.save(student),HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = "/{id}")
